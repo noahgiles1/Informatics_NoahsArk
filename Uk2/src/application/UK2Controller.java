@@ -5,9 +5,12 @@ package application;
 
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,22 +18,27 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
 
-public class UK2Controller {
+public class UK2Controller implements Initializable {
 
 	@FXML LineChart<String,Number> lineChart;
 	@FXML Label lbl;
+	@FXML public ComboBox<String> selectg;
+	ObservableList<String> list = FXCollections.observableArrayList("Confirmed Cases", "Deaths", "Recovered", "All");
 	
+	@SuppressWarnings("unchecked")
 	public void btn(ActionEvent event) {
 		lineChart.getData().clear();
 
@@ -54,10 +62,12 @@ try {
 			}
 			in.close();
 		
-
+			
+	
+			
 		      XYChart.Series<String,Number> series= new XYChart.Series<String,Number>(); 
-		    
-		     
+		      XYChart.Series<String,Number> series1= new XYChart.Series<String,Number>(); 
+		      XYChart.Series<String,Number> series2= new XYChart.Series<String,Number>(); 
 				
 			
 			 
@@ -66,14 +76,45 @@ try {
 				 int i = Integer.parseInt(str.get(2));
 				 	series.getData().add(new XYChart.Data<String, Number> (str.get(3),i));
 				}
+			 for(ArrayList<String> str : getData(response)) {
+				 int i = Integer.parseInt(str.get(1));
+				 	series1.getData().add(new XYChart.Data<String, Number> (str.get(3),i));
+				}
+			 for(ArrayList<String> str : getData(response)) {
+				 int i = Integer.parseInt(str.get(0));
+				 	series2.getData().add(new XYChart.Data<String, Number> (str.get(3),i));
+				}
 			 lineChart.setCreateSymbols(false);
-			 lineChart.getData().add(series);
+			 series.setName("Confirmed Cases");
+			 series1.setName("Deaths");
+			 series2.setName("Recovered");
+			 
+			 
+//				 lineChart.getData().addAll(series, series1, series2);
+			
 
 				for (final XYChart.Data<String, Number> data : series.getData()) {
 					Tooltip.install(data.getNode(), new Tooltip("X :" + data.getXValue() + "\n Y :" + String.valueOf(data.getYValue())));
 				
 				
 			}
+				
+				if (selectg.getValue().equals("Deaths")){
+					
+					lineChart.getData().add(series1);
+				}
+				else if (selectg.getValue().equals("Confirmed Cases")){
+				
+					lineChart.getData().add(series);
+				}
+				else if (selectg.getValue().equals("Recovered")){
+					 lineChart.getData().add(series2);
+				}
+				
+				else if (selectg.getValue().equals("All")){
+					 lineChart.getData().addAll(series, series1,series2);
+				}
+				
 			getData(response);
 			
 			
@@ -118,8 +159,15 @@ try {
 	
 
 	}
+
+		@Override
+		public void initialize(URL location, ResourceBundle resources) {
+			// TODO Auto-generated method stub
+			selectg.setItems(list);
+		}
 }
 
+	
 	
 		
 	
