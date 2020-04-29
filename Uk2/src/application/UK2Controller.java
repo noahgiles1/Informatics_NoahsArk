@@ -30,6 +30,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
@@ -46,7 +48,23 @@ public class UK2Controller implements Initializable {
 	
 	@SuppressWarnings("unchecked")
 	public void btn(ActionEvent event) throws InterruptedException {
-		
+		System.out.println(selectC.getValue());
+		if (selectC.getValue() == null) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Country Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select a country from the dropdown box.");
+			alert.showAndWait();
+			return;
+		}
+		if (selectg.getValue() == null) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Graph Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select the type of graph you wish to view from the dropdown box.");
+			alert.showAndWait();
+			return;
+		}
 		
 		
 		lineChart.getData().clear();
