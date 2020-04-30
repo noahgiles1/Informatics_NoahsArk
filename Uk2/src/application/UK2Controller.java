@@ -13,9 +13,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +51,16 @@ public class UK2Controller implements Initializable {
 	
 	@SuppressWarnings("unchecked")
 	public void btn(ActionEvent event) throws InterruptedException {
-		System.out.println(selectC.getValue());
+		lineChart.setAnimated(false);
+		lineChart.getData().clear();
+		if (netIsAvailable() == false) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Connection Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Please check your internet connection and try again.");
+			alert.showAndWait();
+			return;
+		}
 		if (selectC.getValue() == null) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Country Error");
@@ -66,9 +78,6 @@ public class UK2Controller implements Initializable {
 			return;
 		}
 		
-		
-		lineChart.getData().clear();
-		
 			StringBuffer response = null;
 			XYChart.Series<String,Number> series= new XYChart.Series<String,Number>(); 
 		    XYChart.Series<String,Number> series1= new XYChart.Series<String,Number>(); 
@@ -85,7 +94,6 @@ public class UK2Controller implements Initializable {
 		    	}
 		    }
 			
-			
 			for(ArrayList<String> str : getData(response)) {
 				 int i = Integer.parseInt(str.get(2));
 				 	series.getData().add(new XYChart.Data<String, Number> (str.get(3),i));
@@ -98,18 +106,12 @@ public class UK2Controller implements Initializable {
 				 int i = Integer.parseInt(str.get(0));
 				 	series2.getData().add(new XYChart.Data<String, Number> (str.get(3),i));
 				}
-			 lineChart.setCreateSymbols(false);
-			 series.setName("Confirmed Cases");
-			 series1.setName("Deaths");
-			 series2.setName("Recovered");
+			lineChart.setCreateSymbols(false);
 			
-		
-		
-					
-
-			 for (final XYChart.Data<String, Number> data : series.getData()) {
-				Tooltip.install(data.getNode(), new Tooltip("X :" + data.getXValue() + "\n Y :" + String.valueOf(data.getYValue())));	
-					}
+			 series.setName("Confirmed Cases");
+			 series2.setName("Recovered");
+			 series1.setName("Deaths");
+			
 						
 						if (selectg.getValue().equals("Deaths")){
 							y_axis.setText("No. of Deahts");
@@ -132,28 +134,8 @@ public class UK2Controller implements Initializable {
 							y_axis.setRotate(270.0);
 							 lineChart.getData().addAll(series, series1,series2);
 						}
-				
-			 }
 						
-				
-			
-	
-	
-
-	
-	public static String[] getData1(StringBuffer response) {
-		Gson gson = new Gson();
-		MyPojo myPojo = gson.fromJson(response.toString(), MyPojo.class);
-		
-		for(int i=0; i < myPojo.getCountries().length; i++) {
-			System.out.println(myPojo.getCountries()[i]);
-		}
-		
-		return new String[] {
-			"Global Stats: " + myPojo.getGlobal()
-		};
-		
-	}
+			 }
 	
 		public static StringBuffer APICall(String country) {
 			StringBuffer response = new StringBuffer();
@@ -165,6 +147,13 @@ public class UK2Controller implements Initializable {
 			int responseCode = con.getResponseCode();
 			System.out.println("Sending 'GET' request to URL : " + url);
 			System.out.println("Response Code : " + responseCode);
+			if (responseCode != 200) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Connection Error");
+				alert.setHeaderText(null);
+				alert.setContentText("Unable to connect to the api. If this issue persists there may be an issue out of our control!");
+				alert.showAndWait();
+			}
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String inputLine;
 			
@@ -183,13 +172,10 @@ public class UK2Controller implements Initializable {
 		}
 		
 		public static ArrayList<ArrayList<String>> getData(StringBuffer response) {
-			
-			
+
 			GsonBuilder gsonBuilder = new GsonBuilder();
 			Gson gson = gsonBuilder.create();
 			dayOneAPI[] dayOne = gson.fromJson(response.toString(), dayOneAPI[].class);
-			
-	
 			
 			ArrayList<ArrayList<String>> str = new ArrayList<ArrayList<String>>();
 			for (int i=0; i < dayOne.length; i++) {
@@ -208,7 +194,10 @@ public class UK2Controller implements Initializable {
 				fixedLengthList.set(1, fixedLengthList.get(1).replaceAll("[^\\d.]", ""));
 				fixedLengthList.set(2, fixedLengthList.get(2).replaceAll("[^\\d.]", ""));
 				fixedLengthList.set(3, fixedLengthList.get(3).substring(7, 17));
-				str.add(fixedLengthList);
+				
+				if (Integer.parseInt(fixedLengthList.get(2)) > 99) {
+					str.add(fixedLengthList);
+				}
 			}
 			
 			
@@ -216,24 +205,38 @@ public class UK2Controller implements Initializable {
 			return str;
 		 
 	}
-
+		private static boolean netIsAvailable() {
+		    try {
+		        final URL url = new URL("http://www.google.com");
+		        final URLConnection conn = url.openConnection();
+		        conn.connect();
+		        conn.getInputStream().close();
+		        return true;
+		    } catch (MalformedURLException e) {
+		        throw new RuntimeException(e);
+		    } catch (IOException e) {
+		        return false;
+		    }
+		}
 
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
 			// TODO Auto-generated method stub
+			
 			selectg.setItems(list);
 			ObservableList<String>  data = FXCollections.observableArrayList();
 			for(ArrayList<String> str : UK2.Countries) {
 				data.add(str.get(0));
 			}
 			selectC.setItems(data);
-		}
-		
+			
+			if (netIsAvailable() == false) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Connection Error");
+				alert.setHeaderText(null);
+				alert.setContentText("Please check your internet connection and try again.");
+				alert.showAndWait();
+				return;
+			}
+		}		
 }
-
-	
-	
-		
-	
-	
-

@@ -1,9 +1,13 @@
 package application;
 	
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -14,6 +18,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 
 
@@ -34,17 +40,26 @@ public class UK2 extends Application {
 		}
 	}
 	
+	
 	public static void main(String[] args) {
 			try {
-				
-			
+
 			String url = "https://api.covid19api.com/summary";
 			URL obj = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 			
+			
 			int responseCode = con.getResponseCode();
 			System.out.println("Sending 'GET' request to URL : " + url);
 			System.out.println("Response Code : " + responseCode);
+			if (responseCode != 200) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Connection Error");
+				alert.setHeaderText(null);
+				alert.setContentText("Unable to connect to the api. If this issue persists there may be an issue out of our control!");
+				alert.showAndWait();
+				return;
+			}
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
@@ -63,6 +78,7 @@ public class UK2 extends Application {
 			}
 		launch(args);
 	}
+	
 	public static void getData1(StringBuffer response) {
 		Gson gson = new Gson();
 		MyPojo myPojo = gson.fromJson(response.toString(), MyPojo.class);
@@ -76,7 +92,10 @@ public class UK2 extends Application {
 			List.add(fixedLengthList.get(6));
 			List.set(0, List.get(0).substring(10));
 			List.set(1, List.get(1).substring(7));
-			Countries.add(List);
+			if (Integer.parseInt(fixedLengthList.get(3).substring(17)) > 99) {
+				Countries.add(List);
+			}
+		
 		}
 		
 	}
