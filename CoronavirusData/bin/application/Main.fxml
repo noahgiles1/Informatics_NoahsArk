@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+   <children>
+      <Label layoutX="186.0" layoutY="14.0" text="Coronavirus Data">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <VBox layoutX="200.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" spacing="30.0">
+         <children>
+            <Button fx:id="LiveData" mnemonicParsing="false" onAction="#HandleButtonEvent" prefHeight="30.0" prefWidth="200.0" text="Live Data">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="PastData" mnemonicParsing="false" onAction="#HandleButtonEvent" prefHeight="30.0" prefWidth="200.0" text="Past Data By Country">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="CompareCountries" mnemonicParsing="false" onAction="#HandleButtonEvent" prefHeight="30.0" prefWidth="200.0" text="Compare Contries">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</Pane>

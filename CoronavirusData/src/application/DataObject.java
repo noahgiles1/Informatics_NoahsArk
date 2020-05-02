@@ -1,18 +1,18 @@
 package application;
-public class MyPojo
+public class DataObject
 {
-    private Countries[] Countries;
+    private Country[] Countries;
 
     private Global Global;
 
     private String Date;
 
-    public Countries[] getCountries ()
+    public Country[] getCountries ()
     {
         return Countries;
     }
 
-    public void setCountries (Countries[] Countries)
+    public void setCountries (Country[] Countries)
     {
         this.Countries = Countries;
     }

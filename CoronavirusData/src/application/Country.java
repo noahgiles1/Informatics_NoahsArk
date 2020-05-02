@@ -1,5 +1,5 @@
 package application;
-public class Countries
+public class Country
 {
     private String NewRecovered;
 
@@ -41,9 +41,9 @@ public class Countries
         this.NewDeaths = NewDeaths;
     }
 
-    public String getTotalRecovered ()
+    public int getTotalRecovered ()
     {
-        return TotalRecovered;
+        return Integer.parseInt(TotalRecovered);
     }
 
     public void setTotalRecovered (String TotalRecovered)
@@ -51,9 +51,9 @@ public class Countries
         this.TotalRecovered = TotalRecovered;
     }
 
-    public String getTotalConfirmed ()
+    public int getTotalConfirmed ()
     {
-        return TotalConfirmed;
+    	return Integer.parseInt(TotalConfirmed);
     }
 
     public void setTotalConfirmed (String TotalConfirmed)
@@ -101,9 +101,9 @@ public class Countries
         this.NewConfirmed = NewConfirmed;
     }
 
-    public String getTotalDeaths ()
+    public int getTotalDeaths ()
     {
-        return TotalDeaths;
+    	return Integer.parseInt(TotalDeaths);
     }
 
     public void setTotalDeaths (String TotalDeaths)
