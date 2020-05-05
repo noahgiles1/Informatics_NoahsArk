@@ -32,9 +32,9 @@ public class Main extends Application {
 		popAge = DataAPIs.populationAgeAPI();
 		
 		for(Country country : liveData.getCountries()) {
-			country.setCountryAge(popAge); // links the data from the popluation age API to the data from the covid API
+			country.setCountryAge(popAge); // links the data from the popluation age API with the data from the covid API
 		}
-		System.out.println("");
+		
 		launch(args);
 	}
 }

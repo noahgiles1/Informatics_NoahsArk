@@ -9,7 +9,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LiveDataController">
    <children>
-      <TableView fx:id="dataTable" layoutX="29.0" layoutY="86.0" prefHeight="350.0" prefWidth="633.0">
+      <TableView fx:id="dataTable" layoutX="29.0" layoutY="86.0" onMouseClicked="#rowClicked" prefHeight="350.0" prefWidth="633.0">
         <columns>
           <TableColumn fx:id="countryColumn" prefWidth="150.0" text="Country" />
           <TableColumn fx:id="casesColumn" prefWidth="150.0" sortType="DESCENDING" text="Confirmed Cases" />
@@ -26,6 +26,6 @@
             <Label fx:id="globalRecoveredLbl" text="Total Global Recovered:" />
          </children>
       </VBox>
-      <Button fx:id="pastDataBtn" layoutX="510.0" layoutY="451.0" mnemonicParsing="false" onAction="#pastDataBtnEvent" text="Open Country's Past Data" />
+      <Button fx:id="pastDataBtn" layoutX="510.0" layoutY="451.0" mnemonicParsing="false" onAction="#pastDataBtnEvent" text="Open Country's Past Data" visible="false" />
    </children>
 </Pane>

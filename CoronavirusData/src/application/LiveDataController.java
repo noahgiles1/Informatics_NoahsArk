@@ -18,43 +18,33 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class LiveDataController implements Initializable{
 
-	@FXML
-	private TableView<Country> dataTable;
+	@FXML private TableView<Country> dataTable;
 	
-	@FXML
-    private TableColumn<Country, String> countryColumn;
+	@FXML private TableColumn<Country, String> countryColumn;
 
-    @FXML
-    private TableColumn<Country, Integer> casesColumn;
+    @FXML private TableColumn<Country, Integer> casesColumn;
 
-    @FXML
-    private TableColumn<Country, String> deathsColumn;
+    @FXML private TableColumn<Country, String> deathsColumn;
 
-    @FXML
-    private TableColumn<Country, String> recoveredColumn;
+    @FXML private TableColumn<Country, String> recoveredColumn;
     
-    @FXML
-    private TableColumn<Country, Double> deathRateColumn;
+    @FXML private TableColumn<Country, Double> deathRateColumn;
 
-	@FXML
-	private Button HomeBtn;
+	@FXML private Button HomeBtn;
 
-	@FXML
-    private Label globalCasesLbl;
+	@FXML private Label globalCasesLbl;
 
-    @FXML
-    private Label globalDeathsLbl;
+    @FXML private Label globalDeathsLbl;
 
-    @FXML
-    private Label globalRecoveredLbl;
+    @FXML private Label globalRecoveredLbl;
     
-    @FXML 
-    private Button pastDataBtn;
+    @FXML private Button pastDataBtn;
     
 	private ObservableList<Country> data;
 
@@ -72,20 +62,32 @@ public class LiveDataController implements Initializable{
 	}
 	
 	 @FXML
-	    void pastDataBtnEvent(ActionEvent event) throws IOException {
+	    void pastDataBtnEvent(ActionEvent event) throws IOException, InterruptedException {
 		 if (dataTable.getSelectionModel().getSelectedItem() != null) {
-		        Country selectedCountry = dataTable.getSelectionModel().getSelectedItem();
+		        Country selectedCountry = dataTable.getSelectionModel().getSelectedItem(); //gets selected country from the selected row
 		        
 		        Stage stage = (Stage) pastDataBtn.getScene().getWindow();
-				Parent root = FXMLLoader.load(getClass().getResource("PastData.fxml"));
-
-				Scene scene = new Scene(root);
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("PastData.fxml"));
+				
+				Scene scene = new Scene(loader.load());
 				stage.setScene(scene);
 				stage.show();
 				
-				past
+				PastDataController controller = (PastDataController) loader.getController(); // grabs the controller
+				
+				//sets up the past data page with the corresponding country 
+				controller.selectC.setValue(selectedCountry.getCountry());
+				controller.selectg.setValue("All");
+				controller.btn(event);
+				
 		    }
 	    }
+	 
+	 @FXML
+	    void rowClicked(MouseEvent event) {
+		 	pastDataBtn.setVisible(true);
+	    }
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -118,19 +120,15 @@ public class LiveDataController implements Initializable{
 
 						// sets background colour depending on death rate value
 						if (value >= 15) {
-
 							setStyle("-fx-background-color: indianred");
 						}
 						else if (value >= 10) {
-
 							setStyle("-fx-background-color: orange");
 						}
 						else if (value >= 5) {
-
 							setStyle("-fx-background-color: yellow");
 						}
 						else {
-
 							setStyle("-fx-background-color: lightgreen");
 						}
 					}
