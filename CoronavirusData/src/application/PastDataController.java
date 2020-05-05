@@ -52,6 +52,7 @@ public class PastDataController implements Initializable {
 	@FXML public Label y_axis;
 	@FXML public NumberAxis xAxis;
 	
+	
 	ObservableList<String> list = FXCollections.observableArrayList("Confirmed Cases", "Deaths", "Recovered", "All");
 	Country chosenCountry;
 	
@@ -214,41 +215,7 @@ public class PastDataController implements Initializable {
 		return response;
 
 	}
-
-	public static ArrayList<ArrayList<String>> getData(StringBuffer response) {
-
-
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		Gson gson = gsonBuilder.create();
-		DayOne[] dayOne = gson.fromJson(response.toString(), DayOne[].class);
-
-
-
-		ArrayList<ArrayList<String>> str = new ArrayList<ArrayList<String>>();
-		for (int i=0; i < dayOne.length; i++) {
-			String csv = dayOne[i].toString();
-			String[] elements = csv.split(", ");
-			ArrayList<String> fixedLengthList = new ArrayList<>(Arrays.asList(elements));
-			fixedLengthList.remove(0);
-			fixedLengthList.remove(1);
-			fixedLengthList.remove(3);
-			fixedLengthList.remove(3);
-			fixedLengthList.remove(4);
-			fixedLengthList.remove(4);
-			fixedLengthList.remove(4);
-			fixedLengthList.remove(1);
-			fixedLengthList.set(0, fixedLengthList.get(0).replaceAll("[^\\d.]", ""));
-			fixedLengthList.set(1, fixedLengthList.get(1).replaceAll("[^\\d.]", ""));
-			fixedLengthList.set(2, fixedLengthList.get(2).replaceAll("[^\\d.]", ""));
-			fixedLengthList.set(3, fixedLengthList.get(3).substring(7, 17));
-			str.add(fixedLengthList);
-		}
-
-
-		//IN ORDER - RECOVERED, DEATHS, CONFIRMED, DATE
-		return str;
-
-	}
+	
 
 
 	@Override

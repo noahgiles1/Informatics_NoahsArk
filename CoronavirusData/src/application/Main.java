@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 
 public class Main extends Application {
 	public static DataObject liveData;
+	public static CountryAge[] popAge;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -28,6 +29,12 @@ public class Main extends Application {
 	
 	public static void main(String[] args) throws IOException {
 		liveData = DataAPIs.liveDataAPI();
+		popAge = DataAPIs.populationAgeAPI();
+		
+		for(Country country : liveData.getCountries()) {
+			country.setCountryAge(popAge); // links the data from the popluation age API to the data from the covid API
+		}
+		System.out.println("");
 		launch(args);
 	}
 }

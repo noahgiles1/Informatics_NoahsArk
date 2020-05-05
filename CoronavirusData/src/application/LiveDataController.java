@@ -13,9 +13,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class LiveDataController implements Initializable{
@@ -34,11 +37,25 @@ public class LiveDataController implements Initializable{
 
     @FXML
     private TableColumn<Country, String> recoveredColumn;
-
+    
+    @FXML
+    private TableColumn<Country, Double> deathRateColumn;
 
 	@FXML
 	private Button HomeBtn;
-	
+
+	@FXML
+    private Label globalCasesLbl;
+
+    @FXML
+    private Label globalDeathsLbl;
+
+    @FXML
+    private Label globalRecoveredLbl;
+    
+    @FXML 
+    private Button pastDataBtn;
+    
 	private ObservableList<Country> data;
 
 	@FXML
@@ -53,19 +70,83 @@ public class LiveDataController implements Initializable{
 			stage.show();
 		}
 	}
+	
+	 @FXML
+	    void pastDataBtnEvent(ActionEvent event) throws IOException {
+		 if (dataTable.getSelectionModel().getSelectedItem() != null) {
+		        Country selectedCountry = dataTable.getSelectionModel().getSelectedItem();
+		        
+		        Stage stage = (Stage) pastDataBtn.getScene().getWindow();
+				Parent root = FXMLLoader.load(getClass().getResource("PastData.fxml"));
+
+				Scene scene = new Scene(root);
+				stage.setScene(scene);
+				stage.show();
+				
+				past
+		    }
+	    }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		globalCasesLbl.setText("Total Global Confirmed Cases: "+ Main.liveData.getGlobal().getTotalConfirmed());
+		globalDeathsLbl.setText("Total Global Deaths: "+ Main.liveData.getGlobal().getTotalDeaths());
+		globalRecoveredLbl.setText("Total Global Recovered: "+ Main.liveData.getGlobal().getTotalRecovered());
+	
 		data = FXCollections.observableArrayList(Main.liveData.getCountries());
-		
-		//dataTable.setItems(data);
-		
+			
 		countryColumn.setCellValueFactory(new PropertyValueFactory<Country, String>("Country"));
 		casesColumn.setCellValueFactory(new PropertyValueFactory<Country, Integer>("TotalConfirmed"));
-        deathsColumn.setCellValueFactory(new PropertyValueFactory<Country, String>("TotalDeaths"));
-        recoveredColumn.setCellValueFactory(new PropertyValueFactory<Country, String>("TotalRecovered"));
-		
+		deathsColumn.setCellValueFactory(new PropertyValueFactory<Country, String>("TotalDeaths"));
+		recoveredColumn.setCellValueFactory(new PropertyValueFactory<Country, String>("TotalRecovered"));
+		deathRateColumn.setCellValueFactory(new PropertyValueFactory<Country, Double>("DeathRate"));
+
+		deathRateColumn.setCellFactory(column -> { // overrides the javafx setCellFactory
+			return new TableCell<Country, Double>() {
+				@Override
+				protected void updateItem(Double value, boolean empty) {
+					super.updateItem(value, empty);
+
+					if (value == null || empty) { // checks for null value
+						setText(null);
+					} 
+					
+					else {
+
+						setText(value.toString()); // sets cell text
+
+						// sets background colour depending on death rate value
+						if (value >= 15) {
+
+							setStyle("-fx-background-color: indianred");
+						}
+						else if (value >= 10) {
+
+							setStyle("-fx-background-color: orange");
+						}
+						else if (value >= 5) {
+
+							setStyle("-fx-background-color: yellow");
+						}
+						else {
+
+							setStyle("-fx-background-color: lightgreen");
+						}
+					}
+				}
+            };
+        });
+
+        countryColumn.setStyle( "-fx-alignment: CENTER-RIGHT;");
+        casesColumn.setStyle( "-fx-alignment: CENTER-RIGHT;");
+        deathsColumn.setStyle( "-fx-alignment: CENTER-RIGHT;");
+        recoveredColumn.setStyle( "-fx-alignment: CENTER-RIGHT;");
+        deathRateColumn.setStyle( "-fx-alignment: CENTER-RIGHT;");
+        
 		dataTable.setItems(data);
+		
+		//sets it to sort by cases by default
 		casesColumn.setSortType(TableColumn.SortType.DESCENDING);
 		dataTable.getSortOrder().add(casesColumn);
 		dataTable.sort();

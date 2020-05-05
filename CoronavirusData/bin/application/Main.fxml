@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <children>
       <Label layoutX="186.0" layoutY="14.0" text="Coronavirus Data">
@@ -27,7 +26,12 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="CompareCountries" mnemonicParsing="false" onAction="#HandleButtonEvent" prefHeight="30.0" prefWidth="200.0" text="Compare Contries">
+            <Button fx:id="CompareCountries" mnemonicParsing="false" onAction="#HandleButtonEvent" prefHeight="30.0" prefWidth="200.0" text="Compare Countries">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="DeathsAge" mnemonicParsing="false" onAction="#HandleButtonEvent" prefHeight="30.0" prefWidth="200.0" text="Deaths vs Population Age">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

@@ -20,6 +20,9 @@ public class MainController {
 
     @FXML
     private Button CompareCountries;
+    
+    @FXML
+    private Button DeathsAge;
 
     @FXML
     void HandleButtonEvent(ActionEvent event) throws IOException {
@@ -37,6 +40,10 @@ public class MainController {
         else if(event.getSource()==CompareCountries) {
             stage = (Stage) CompareCountries.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        }
+        else if(event.getSource()==DeathsAge) {
+            stage = (Stage) DeathsAge.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("AgeScatter.fxml"));
         }
         
         Scene scene = new Scene(root);

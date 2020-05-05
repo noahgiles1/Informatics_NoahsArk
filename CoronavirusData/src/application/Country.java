@@ -1,4 +1,8 @@
 package application;
+
+import java.util.Locale;
+import java.util.MissingResourceException;
+
 public class Country
 {
     private String NewRecovered;
@@ -20,6 +24,8 @@ public class Country
     private String TotalDeaths;
 
     private String Date;
+    
+    private CountryAge countryAge;
 
     public String getNewRecovered ()
     {
@@ -120,7 +126,33 @@ public class Country
     {
         this.Date = Date;
     }
+    
+    public double getDeathRate() {
+    	Double deathRate= Double.parseDouble(TotalDeaths)/Double.parseDouble(TotalConfirmed)*100;
+    	
+    	return Math.round(deathRate);
+    }
 
+    public void setCountryAge(CountryAge[] countryAges) {
+    	for(CountryAge country: countryAges) {
+    		try {
+    			Locale locale = new Locale("en",getCountryCode()); // converts the 2 digit iso country code to the 3 digit iso code
+
+    			if (locale.getISO3Country().equals(country.getCountryiso3code())){
+    				this.countryAge = country;
+    			}
+    		}
+    		catch (MissingResourceException e){
+    			//do nothing
+    		}
+    	}
+    }
+    
+    public CountryAge getCountryAge() {
+
+    	return countryAge;
+    }
+    
     @Override
     public String toString()
     {
