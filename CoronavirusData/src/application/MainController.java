@@ -39,7 +39,7 @@ public class MainController {
         }
         else if(event.getSource()==CompareCountries) {
             stage = (Stage) CompareCountries.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+            root = FXMLLoader.load(getClass().getResource("CompareCountries.fxml"));
         }
         else if(event.getSource()==DeathsAge) {
             stage = (Stage) DeathsAge.getScene().getWindow();

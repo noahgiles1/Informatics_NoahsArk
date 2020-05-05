@@ -69,7 +69,6 @@ public class UK2 extends Application {
 			}
 			in.close();
 			
-		
 			getData1(response);
 			}
 			

@@ -1,5 +1,5 @@
 package application;
-	
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,12 +17,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 
-
-public class PastData extends Application {
+public class CompareCountries extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("PastData.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("CompareCountries.fxml"));
 			Scene scene = new Scene(root);
 			
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -36,5 +35,4 @@ public class PastData extends Application {
 	public static void main(String[] args) throws IOException {
 		launch(args);
 	}
-
 }
