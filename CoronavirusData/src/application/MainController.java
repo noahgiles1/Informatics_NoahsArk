@@ -36,7 +36,7 @@ public class MainController {
         }
         else if(event.getSource()==CompareCountries) {
             stage = (Stage) CompareCountries.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+            root = FXMLLoader.load(getClass().getResource("CompareCountries.fxml"));
         }
         
         Scene scene = new Scene(root);
