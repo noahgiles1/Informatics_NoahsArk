@@ -64,6 +64,7 @@ public class PastDataController implements Initializable {
 		stage.setScene(scene);
 		stage.show();
 	}
+	
 
 	public void btn1(ActionEvent event) throws IOException {
 
@@ -91,6 +92,7 @@ public class PastDataController implements Initializable {
 				chosenCountry = country;
 			}
 		}
+		
 
 		DayOne[] countryData = DataAPIs.dayOneAPI(chosenCountry);
 
@@ -133,6 +135,7 @@ public class PastDataController implements Initializable {
 
 		DayOne[] countryData = DataAPIs.dayOneAPI(chosenCountry);
 
+
 		for(DayOne dataPoint : countryData) {
 			if (Integer.parseInt(dataPoint.getConfirmed()) > 99 ) {
 				deaths.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getDeaths())));
@@ -162,7 +165,7 @@ public class PastDataController implements Initializable {
 		}
 
 
-		return response;
+		return;
 
 	}
 

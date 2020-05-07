@@ -24,6 +24,6 @@
       <ComboBox fx:id="selectC" layoutX="73.0" layoutY="386.0" prefWidth="150.0" promptText="Choose Country" />
       <Label fx:id="y_axis" contentDisplay="CENTER" layoutX="-44.0" layoutY="59.0" prefHeight="25.0" prefWidth="173.0" />
       <Button fx:id="homeBtn" layoutX="14.0" layoutY="21.0" mnemonicParsing="false" onAction="#homeEvent" text="Home" />
-      <Button layoutX="341.0" layoutY="418.0" mnemonicParsing="false" onAction="#btn1" prefHeight="25.0" prefWidth="136.0" text="Save to CSV" />
+      <Button layoutX="334.0" layoutY="416.0" mnemonicParsing="false" onAction="#btn1" prefHeight="25.0" prefWidth="136.0" text="Save to CSV" />
    </children>
 </AnchorPane>

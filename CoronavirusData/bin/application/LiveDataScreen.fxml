@@ -27,5 +27,7 @@
          </children>
       </VBox>
       <Button fx:id="pastDataBtn" layoutX="510.0" layoutY="451.0" mnemonicParsing="false" onAction="#pastDataBtnEvent" text="Open Country's Past Data" visible="false" />
+      <Button fx:id="jsonLD" layoutX="356.0" layoutY="451.0" mnemonicParsing="false" onAction="#jsonLDEvent" text="Save Data to Json-LD" visible="false" />
+      <Button fx:id="RDFa" layoutX="218.0" layoutY="451.0" mnemonicParsing="false" onAction="#RDFaEvent" prefHeight="25.0" prefWidth="128.0" text="Save Data to RDFa" visible="false" />
    </children>
 </Pane>

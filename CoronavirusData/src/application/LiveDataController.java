@@ -46,6 +46,11 @@ public class LiveDataController implements Initializable{
     
     @FXML private Button pastDataBtn;
     
+    @FXML private Button jsonLD;
+    
+    @FXML private Button RDFa;
+    
+    
 	private ObservableList<Country> data;
 
 	@FXML
@@ -59,6 +64,24 @@ public class LiveDataController implements Initializable{
 			stage.setScene(scene);
 			stage.show();
 		}
+	}
+	
+	@FXML
+	void RDFaEvent(ActionEvent even) throws IOException {
+		if (dataTable.getSelectionModel().getSelectedItem() != null) {
+	        Country selectedCountry = dataTable.getSelectionModel().getSelectedItem(); //gets selected country from the selected row
+	        toMarkUp.RDFa(selectedCountry.getCountry());
+			
+	    }
+	}
+	
+	@FXML
+	void jsonLDEvent(ActionEvent event) throws IOException {
+		if (dataTable.getSelectionModel().getSelectedItem() != null) {
+	        Country selectedCountry = dataTable.getSelectionModel().getSelectedItem(); //gets selected country from the selected row
+	        toMarkUp.jsonLd(selectedCountry.getCountry());
+			
+	    }
 	}
 	
 	 @FXML
@@ -86,6 +109,8 @@ public class LiveDataController implements Initializable{
 	 @FXML
 	    void rowClicked(MouseEvent event) {
 		 	pastDataBtn.setVisible(true);
+		 	jsonLD.setVisible(true);
+		 	RDFa.setVisible(true);
 	    }
 
 
