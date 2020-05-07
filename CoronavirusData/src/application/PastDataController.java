@@ -151,16 +151,24 @@ public class PastDataController implements Initializable {
 		recovered.setName("Recovered");
 
 		if (selectg.getValue().equals("Deaths")){
+			y_axis.setText("No. of Deaths");
+			y_axis.setRotate(270.0);
 			lineChart.getData().addAll(deaths);
 
 		}
 		else if (selectg.getValue().equals("Confirmed Cases")){
+			y_axis.setText("No. of Confirmed Cases");
+			y_axis.setRotate(270.0);
 			lineChart.getData().addAll(cases);
 		}
 		else if (selectg.getValue().equals("Recovered")){
+			y_axis.setText("No. of Recoveries");
+			y_axis.setRotate(270.0);
 			lineChart.getData().addAll(recovered);
 		}
 		else if (selectg.getValue().equals("All")){
+			y_axis.setText("");
+			y_axis.setRotate(270.0);
 			lineChart.getData().addAll(cases, deaths, recovered);
 		}
 
