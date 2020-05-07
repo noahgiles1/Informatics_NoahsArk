@@ -10,11 +10,6 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
-import com.google.schemaorg.JsonLdSerializer;
-import com.google.schemaorg.JsonLdSyntaxException;
-import com.google.schemaorg.core.CoreFactory;
-import com.google.schemaorg.core.Thing;
-import com.google.schemaorg.core.datatype.Text;
 
 public class toMarkUp {
 	public static DataObject liveData;
