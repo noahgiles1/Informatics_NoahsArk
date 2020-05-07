@@ -161,9 +161,6 @@ public class PastDataController implements Initializable {
 			lineChart.getData().addAll(cases, deaths, recovered);
 		}
 
-
-		return response;
-
 	}
 
 
