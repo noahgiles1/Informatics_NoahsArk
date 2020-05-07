@@ -64,7 +64,7 @@ public class PastDataController implements Initializable {
 		stage.setScene(scene);
 		stage.show();
 	}
-	
+
 
 	public void btn1(ActionEvent event) throws IOException {
 
@@ -92,7 +92,7 @@ public class PastDataController implements Initializable {
 				chosenCountry = country;
 			}
 		}
-		
+
 
 		DayOne[] countryData = DataAPIs.dayOneAPI(chosenCountry);
 
@@ -171,9 +171,6 @@ public class PastDataController implements Initializable {
 			y_axis.setRotate(270.0);
 			lineChart.getData().addAll(cases, deaths, recovered);
 		}
-
-
-		return;
 
 	}
 
