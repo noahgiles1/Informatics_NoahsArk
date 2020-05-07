@@ -1,14 +1,8 @@
 package application;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -94,7 +88,6 @@ public class CompareCountriesController implements Initializable {
 			countryData2 = DataAPIs.dayOneAPI(chosenCountry2);
 			CSV.writeCSV(countryData2, chosenCountry2.getCountry());
 		}
-		
 		
 	}
 	
