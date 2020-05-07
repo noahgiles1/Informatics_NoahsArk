@@ -31,7 +31,7 @@ public class toMarkUp {
 		
 		try (FileWriter file = new FileWriter(chosenCountry.getCountry() + "_RDFA.html")) {
 			file.write("<div vocab=\"http://schema.org/\" typeof=\"SpecialAnnouncement\">\n");
-			file.write("<div property=\"datePosted\">" + chosenCountry.getDate() + ">\n");
+			file.write("<div property=\"datePosted\">" + chosenCountry.getDate() + "\n");
 			file.write("<div property=\"spatialCoverage\" typeof=\"place\">\n");
 			file.write("<span property=\"type\">Country</span>\n");
 			file.write("<span property=\"name\">" + chosenCountry.getCountry() + "</span>\n");
