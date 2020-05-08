@@ -1,9 +1,15 @@
 package application;
 
+import java.awt.Component;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Paths;
+
+import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
+
+import javafx.scene.shape.Path;
 
 public class toMarkUp {
 	public static DataObject liveData;
@@ -34,7 +40,10 @@ public class toMarkUp {
 			file.write("<span property=\"TotalDeaths\">" + chosenCountry.getTotalDeaths()  + "</span>\n");
 			file.write("</div>\n");
 			file.write("</div>\n");
-			file.flush();
+
+			java.nio.file.Path p = Paths.get(chosenCountry.getCountry() + "_RDFA.rdf");
+			Component frame = null;
+			JOptionPane.showMessageDialog(frame, "Data successfully saved to RDFa format. \n Location: " + p.toAbsolutePath());
 
 	 } catch (IOException e) {
          e.printStackTrace();
@@ -78,6 +87,10 @@ public class toMarkUp {
             file.write(response.toString());
             file.write("\n</script>");
             file.flush();
+            
+            java.nio.file.Path p = Paths.get(chosenCountry.getCountry() + "_JSON-LD.jsonld");
+			Component frame = null;
+			JOptionPane.showMessageDialog(frame, "Data successfully saved to JSON-LD format. \n Location: " + p.toAbsolutePath());
 
         } catch (IOException e) {
             e.printStackTrace();
