@@ -143,7 +143,7 @@ public class CompareCountriesController implements Initializable {
 		XYChart.Series<String,Number> recovered2= new XYChart.Series<String,Number>();
 
 		//Find the corresponding countries objects in liveData
-		for (Country country : Main.liveData.getCountries()) {
+		for (Country country : COVID19Controller.liveData.getCountries()) {
 			if (selectC.getValue().equals(country.getCountry())) {
 				chosenCountry = country;
 			}
@@ -313,7 +313,7 @@ public class CompareCountriesController implements Initializable {
 		lineChart.setTitle("Comparing Countries");
 		ObservableList<String>  data = FXCollections.observableArrayList();
 		//Only adds countries with over 100 cases
-		for(Country country : Main.liveData.getCountries()) {
+		for(Country country : COVID19Controller.liveData.getCountries()) {
 			if (country.getTotalConfirmed() > 99) {
 				data.add(country.getCountry());
 			}

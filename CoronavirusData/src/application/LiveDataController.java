@@ -118,11 +118,11 @@ public class LiveDataController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		globalCasesLbl.setText("Total Global Confirmed Cases: "+ Main.liveData.getGlobal().getTotalConfirmed());
-		globalDeathsLbl.setText("Total Global Deaths: "+ Main.liveData.getGlobal().getTotalDeaths());
-		globalRecoveredLbl.setText("Total Global Recovered: "+ Main.liveData.getGlobal().getTotalRecovered());
+		globalCasesLbl.setText("Total Global Confirmed Cases: "+ COVID19Controller.liveData.getGlobal().getTotalConfirmed());
+		globalDeathsLbl.setText("Total Global Deaths: "+ COVID19Controller.liveData.getGlobal().getTotalDeaths());
+		globalRecoveredLbl.setText("Total Global Recovered: "+ COVID19Controller.liveData.getGlobal().getTotalRecovered());
 	
-		data = FXCollections.observableArrayList(Main.liveData.getCountries());
+		data = FXCollections.observableArrayList(COVID19Controller.liveData.getCountries());
 			
 		countryColumn.setCellValueFactory(new PropertyValueFactory<Country, String>("Country"));
 		casesColumn.setCellValueFactory(new PropertyValueFactory<Country, Integer>("TotalConfirmed"));

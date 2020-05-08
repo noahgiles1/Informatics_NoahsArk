@@ -70,7 +70,7 @@ public class PastDataController implements Initializable {
 		}
 
 		// finds the corresponding country object in liveData
-		for (Country country : Main.liveData.getCountries()) {
+		for (Country country : COVID19Controller.liveData.getCountries()) {
 			if (selectC.getValue().equals(country.getCountry())) {
 				lineChart.setTitle(selectC.getValue() + " Stats");
 				chosenCountry = country;
@@ -112,7 +112,7 @@ public class PastDataController implements Initializable {
 		XYChart.Series<String,Number> cases= new XYChart.Series<String,Number>();
 		XYChart.Series<String,Number> recovered= new XYChart.Series<String,Number>();
 
-		for (Country country : Main.liveData.getCountries()) {
+		for (Country country : COVID19Controller.liveData.getCountries()) {
 			// finds the corresponding country object in liveData
 			if (selectC.getValue().equals(country.getCountry())) {
 				lineChart.setTitle(selectC.getValue() + " Stats");
@@ -171,7 +171,7 @@ public class PastDataController implements Initializable {
 		
 		ObservableList<String>  data = FXCollections.observableArrayList();
 		
-		for(Country country : Main.liveData.getCountries()) {
+		for(Country country : COVID19Controller.liveData.getCountries()) {
 			// only adds countries with over 100 cases
 			if ((country.getTotalConfirmed()) > 99) {
 				data.add(country.getCountry());

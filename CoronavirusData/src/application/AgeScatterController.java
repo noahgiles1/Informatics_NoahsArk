@@ -36,7 +36,7 @@ public class AgeScatterController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		XYChart.Series<Number, Number> series= new XYChart.Series<Number, Number>(); 
 
-		for(Country dataPoint : Main.liveData.getCountries()) {
+		for(Country dataPoint : COVID19Controller.liveData.getCountries()) {
 
 			if(dataPoint.getCountryAge() != null && dataPoint.getCountryAge().getValue() != null){ // checks if datapoint or the value is null
 				series.getData().add(new XYChart.Data<Number, Number>(dataPoint.getCountryAge().getValue(),dataPoint.getDeathRate())); //adds the data to the graph series

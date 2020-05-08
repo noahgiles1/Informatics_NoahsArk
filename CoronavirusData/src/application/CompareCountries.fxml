@@ -23,7 +23,7 @@
       <ComboBox fx:id="selectg" layoutX="208.0" layoutY="437.0" prefWidth="150.0" promptText="Select Graph" />
       <ComboBox fx:id="selectC" layoutX="43.0" layoutY="376.0" prefWidth="150.0" promptText="Choose Country" />
       <Label fx:id="y_axis" contentDisplay="CENTER" layoutX="-44.0" layoutY="59.0" prefHeight="25.0" prefWidth="173.0" />
-      <Button fx:id="homeBtn" layoutX="14.0" layoutY="21.0" mnemonicParsing="false" onAction="#homeEvent" text="Home" />
+      <Button fx:id="homeBtn" layoutX="14.0" layoutY="21.0" mnemonicParsing="false" onAction="#homeEvent" text="Back" />
       <ComboBox fx:id="selectC1" layoutX="43.0" layoutY="407.0" prefWidth="150.0" promptText="Choose Country" />
       <ComboBox fx:id="selectC2" layoutX="43.0" layoutY="437.0" prefWidth="150.0" promptText="Choose Country" />
       <Button layoutX="440.0" layoutY="437.0" mnemonicParsing="false" onAction="#btn1" prefHeight="25.0" prefWidth="97.0" text="Save to CSV" />

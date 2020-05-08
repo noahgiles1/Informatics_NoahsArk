@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.fxml.FXMLLoader;
 
 
-public class Main extends Application {
+public class COVID19 extends Application {
 	public static DataObject liveData;
 	public static CountryAge[] popAge;
 	

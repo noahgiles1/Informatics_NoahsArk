@@ -72,7 +72,7 @@ public class DataAPIs {
 		while ((inputLine = in.readLine()) != null) {
 			response.append(inputLine);
 		}
-
+		
 		in.close();
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Gson gson = gsonBuilder.create();
