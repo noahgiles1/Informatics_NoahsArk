@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.fxml.FXMLLoader;
 
@@ -23,6 +24,10 @@ public class COVID19 extends Application {
 			Scene scene = new Scene(root,600,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
+			primaryStage.setTitle("Bio-Statlab");
+			
+			Image image = new Image(getClass().getResourceAsStream("/icons/Untitled.png"));
+			primaryStage.getIcons().add(image);
 			primaryStage.show();
 			
 		} catch(Exception e) {
@@ -36,9 +41,11 @@ public class COVID19 extends Application {
 		if (x != 0) {
 			Component frame = null;
 			JOptionPane.showMessageDialog(frame, "There seems to be a problem with your internet connection, please try again.");
-			return;
 		}
+		
+		
 		liveData = DataAPIs.liveDataAPI(); // current data api
+
 		
 		popAge = DataAPIs.populationAgeAPI(); // population age api
 		
