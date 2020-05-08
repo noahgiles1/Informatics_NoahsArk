@@ -2,10 +2,15 @@ package application;
 
 import java.awt.Component;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
@@ -18,7 +23,6 @@ public class DataAPIs {
 		Component frame = null;
 		if (responseCode != 200) {
 			JOptionPane.showMessageDialog(frame, "There was a problem retrieving data from the API please try again. \n" + "Error code: " + responseCode);
-			return;
 		}
 	}
 	
@@ -28,21 +32,43 @@ public class DataAPIs {
 		String url = "https://api.covid19api.com/summary";
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-		int responseCode = con.getResponseCode();
+		int responseCode;
+		Object inputLine;
+		StringBuffer response = new StringBuffer();
+		try {
+			responseCode = con.getResponseCode();
+			System.out.println("Sending 'GET' request to URL : " + url);
+			System.out.println("Response Code : " + responseCode);	
+		}
+		catch (UnknownHostException e) {
+			responseCode = 0;	
+		}
 		
 		checkAPI(responseCode);
-		
-		System.out.println("Sending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
+	
+		if (responseCode == 200) {
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			FileWriter file = new FileWriter("liveDataBackUp.json");
+			file.write(response.toString());
+			file.flush();
+			in.close();
 		}
-		in.close();
+		else if (responseCode != 200) {
+			try {
+			File myObj = new File("liveDataBackUp.json");
+		    Scanner myReader = new Scanner(myObj);
+		    String data = myReader.nextLine();
+		    response.append(data);
+			}
+			catch (FileNotFoundException e) {
+				Component frame = null;
+				JOptionPane.showMessageDialog(frame, "No backup file found");
+				return null;
+			}
+		}
 
 		//Turning the data from API call into an object and returning it
 		Gson gson = new Gson();
@@ -59,21 +85,45 @@ public class DataAPIs {
 		String url = String.format("https://api.covid19api.com/total/dayone/country/%s",  country.getCountry());
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+		int responseCode;
+		try {
+			responseCode = con.getResponseCode();
+			System.out.println("Sending 'GET' request to URL : " + url);
+			System.out.println("Response Code : " + responseCode);	
+		}
+		catch (UnknownHostException e) {
+			responseCode = 0;	
+		}
 	
 
-		int responseCode = con.getResponseCode();
 		
 		checkAPI(responseCode);
-		System.out.println("Sending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		String inputLine;
-
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
+		
+		if (responseCode == 200) {
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
+	
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			FileWriter file = new FileWriter(country.getCountry() + "pastDataBackUp.json");
+			file.write(response.toString());
+			file.flush();
+			in.close();
 		}
-
-		in.close();
+		else if (responseCode != 200) {
+			try {
+				File myObj = new File(country.getCountry() + "pastDataBackUp.json");
+			    Scanner myReader = new Scanner(myObj);
+			    String data = myReader.nextLine();
+			    response.append(data);
+				}
+				catch (FileNotFoundException e) {
+					Component frame = null;
+					JOptionPane.showMessageDialog(frame, "No backup file found");
+					//return null;
+				}
+		}
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Gson gson = gsonBuilder.create();
 
@@ -91,20 +141,46 @@ public class DataAPIs {
 		String url = "http://api.worldbank.org/v2/country/all/indicator/SP.POP.65UP.TO.ZS?date=2018&per_page=1000&format=json";
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+		int responseCode;
+		try {
+			responseCode = con.getResponseCode();
+			System.out.println("Sending 'GET' request to URL : " + url);
+			System.out.println("Response Code : " + responseCode);	
+		}
+		catch (UnknownHostException e) {
+			responseCode = 0;	
+		}
 
-		int responseCode = con.getResponseCode();
 		checkAPI(responseCode);
-		System.out.println("Sending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		String inputLine;
-
 		
-		while ((inputLine = in.readLine()) != null) {
+		if (responseCode == 200) {
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
+	
 			
-			String inputLine2 = inputLine.replaceFirst("\\{.*?\\}", "");
-			String inputLine3 = inputLine2.substring(2, inputLine2.length()-1);
-			response.append(inputLine3);
+			while ((inputLine = in.readLine()) != null) {
+				
+				String inputLine2 = inputLine.replaceFirst("\\{.*?\\}", "");
+				String inputLine3 = inputLine2.substring(2, inputLine2.length()-1);
+				response.append(inputLine3);
+			}
+			FileWriter file = new FileWriter("populationBackUp.json");
+			file.write(response.toString());
+			file.flush();
+			in.close();
+		}
+		else if (responseCode != 200) {
+			try {
+				File myObj = new File("populationBackUp.json");
+			    Scanner myReader = new Scanner(myObj);
+			    String data = myReader.nextLine();
+			    response.append(data);
+			}
+			catch (FileNotFoundException e) {
+				Component frame = null;
+				JOptionPane.showMessageDialog(frame, "No backup file found");
+				return null;
+			}
 		}
 		
 
