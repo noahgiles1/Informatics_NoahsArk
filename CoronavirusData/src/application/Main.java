@@ -41,7 +41,6 @@ public class Main extends Application {
 		if (x != 0) {
 			Component frame = null;
 			JOptionPane.showMessageDialog(frame, "There seems to be a problem with your internet connection, please try again.");
-			//return;
 		}
 		
 		
