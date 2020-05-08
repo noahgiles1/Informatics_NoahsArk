@@ -80,7 +80,7 @@ public class PastDataController implements Initializable {
 
 		DayOne[] countryData = DataAPIs.dayOneAPI(chosenCountry); // uses the dayone api to get the past data for the country
 
-		CSV.writeCSV(countryData, chosenCountry.getCountry());
+		CSV.writeCSV(countryData, chosenCountry.getCountry()); //Writes countrys past data to csv
 	}
 
 

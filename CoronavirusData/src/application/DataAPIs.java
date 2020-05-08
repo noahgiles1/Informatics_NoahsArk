@@ -24,7 +24,7 @@ public class DataAPIs {
 	
 	
 	public static DataObject liveDataAPI() throws IOException {
-
+		//API call for live country data
 		String url = "https://api.covid19api.com/summary";
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -44,6 +44,7 @@ public class DataAPIs {
 		}
 		in.close();
 
+		//Turning the data from API call into an object and returning it
 		Gson gson = new Gson();
 		DataObject liveData = gson.fromJson(response.toString(), DataObject.class);
 
@@ -52,7 +53,7 @@ public class DataAPIs {
 	}
 
 	public static DayOne[] dayOneAPI(Country country) throws IOException {
-		
+		//API call for a countrys data since their first case
 		StringBuffer response = new StringBuffer();
 
 		String url = String.format("https://api.covid19api.com/total/dayone/country/%s",  country.getCountry());
@@ -73,16 +74,18 @@ public class DataAPIs {
 		}
 
 		in.close();
-		System.out.println("test"+response);
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Gson gson = gsonBuilder.create();
 
+		//Turning the data from API call into an object and returning it
 		DayOne[] dayOne = gson.fromJson(response.toString(), DayOne[].class);
 
 		return dayOne;
 	}
 	
 	public static CountryAge[] populationAgeAPI() throws IOException {
+		
+		//API call for countries population data
 		StringBuffer response = new StringBuffer();
 
 		String url = "http://api.worldbank.org/v2/country/all/indicator/SP.POP.65UP.TO.ZS?date=2018&per_page=1000&format=json";
@@ -108,6 +111,7 @@ public class DataAPIs {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Gson gson = gsonBuilder.create();
 
+		//Turning the data from API call into an object and returning it
 		CountryAge[] countriesAges = gson.fromJson(response.toString(), CountryAge[].class);
 		return countriesAges;
 	}

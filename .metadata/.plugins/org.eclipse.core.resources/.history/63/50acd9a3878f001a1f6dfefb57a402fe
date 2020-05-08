@@ -1,0 +1,55 @@
+package application;
+
+import java.io.IOException;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
+
+public class MainController {
+
+    @FXML
+    private Button LiveData;
+
+    @FXML
+    private Button PastData;
+
+    @FXML
+    private Button CompareCountries;
+    
+    @FXML
+    private Button DeathsAge;
+
+    @FXML
+    void HandleButtonEvent(ActionEvent event) throws IOException {
+        Stage stage = null;
+        Parent root = null;
+       
+        if(event.getSource()==LiveData){
+            stage = (Stage) LiveData.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("LiveDataScreen.fxml"));
+        }
+        else if(event.getSource()==PastData) {
+            stage = (Stage) PastData.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("PastData.fxml"));
+        }
+        else if(event.getSource()==CompareCountries) {
+            stage = (Stage) CompareCountries.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("CompareCountries.fxml"));
+        }
+        else if(event.getSource()==DeathsAge) {
+            stage = (Stage) DeathsAge.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("AgeScatter.fxml"));
+        }
+        
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        //System.out.println("test: " + Main.liveData.toString());
+    }
+
+}

@@ -1,0 +1,66 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+
+
+public class API {
+
+		public static void main(String[] args) {
+			
+			
+			try {
+				
+			
+			String url = "https://api.covid19api.com/countries";
+			URL obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+			
+			int responseCode = con.getResponseCode();
+			System.out.println("\nSending 'GET' request to URL : " + url);
+			System.out.println("Response Code : " + responseCode);
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+			
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+			
+			System.out.println(response.toString());
+			
+			//JSONObject myresponse = new JSONObject(response.toString());
+			
+			
+			
+			for(String str : getData(response)) {
+				System.out.println(str);
+			}
+			getData(response);
+			
+			
+			}
+			
+			catch (Exception e){
+				System.out.println(e);
+			}
+				
+			
+		}
+		
+		public static String[] getData(StringBuffer response) {
+			Gson gson = new Gson();
+			MyPojo myPojo = gson.fromJson(response.toString(), MyPojo.class);
+			
+			return new String[] {
+				"Country: " + myPojo.getCountries(),
+				"Dates: " + myPojo.getDate()
+			};
+			
+		}
+}

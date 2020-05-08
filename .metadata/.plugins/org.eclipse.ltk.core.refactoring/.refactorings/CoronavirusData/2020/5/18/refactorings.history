@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;PastData.fxml&apos; to &apos;CoronavirusData/src/application&apos;&#x0D;&#x0A;- Original project: &apos;CoronavirusData&apos;&#x0D;&#x0A;- Destination element: &apos;CoronavirusData/src/application&apos;&#x0D;&#x0A;- Original element: &apos;PastData.fxml&apos;" description="Copy file" destination="/src&lt;application" element1="src/application/PastData.fxml" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1588499204461" units="0" version="1.0"/>
+</session>

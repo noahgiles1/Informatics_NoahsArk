@@ -1,0 +1,9 @@
+1588678757122	Delete element
+1588771065812	Encapsulate field 'TotalConfirmed'
+1588771083831	Encapsulate field 'TotalDeaths'
+1588771093911	Encapsulate field 'datePosted'
+1588771102713	Encapsulate field 'type'
+1588771107579	Encapsulate field 'name'
+1588771110893	Encapsulate field 'context'
+1588771700808	Encapsulate field 'spatialCoverage'
+1588778613159	Encapsulate field 'diseaseSpreadStatistics'

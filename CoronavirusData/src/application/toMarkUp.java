@@ -2,28 +2,25 @@ package application;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
 
 public class toMarkUp {
 	public static DataObject liveData;
 	static Country chosenCountry;
 
 	public static void RDFa(String countryString) throws IOException {
-		String hello = countryString;
+		String selectedCountry = countryString;
+		
+		//Gets list of countries and find the country chosen by the user.
 		liveData = DataAPIs.liveDataAPI();
 		for (Country country : liveData.getCountries()) {
-			if (hello.equals(country.getCountry())) {
+			if (selectedCountry.equals(country.getCountry())) {
 				chosenCountry = country;
 			}
 		}
 
+		//Writes the country data in RDFa format according to SpecialAnnouncement Schema
 		try (FileWriter file = new FileWriter(chosenCountry.getCountry() + "_RDFA.rdf")) {
 			file.write("<div vocab=\"http://schema.org/\" typeof=\"SpecialAnnouncement\">\n");
 			file.write("<div property=\"datePosted\">" + chosenCountry.getDate() + "\n");
@@ -48,23 +45,24 @@ public class toMarkUp {
 	}
 
 	public static void jsonLd(String countryString) throws IOException {
-		String hello = countryString;
+		String selectedCountry = countryString;
+		
+		//Gets list of countries and find the country chosen by the user.
 		liveData = DataAPIs.liveDataAPI();
 		for (Country country : liveData.getCountries()) {
-			if (hello.equals(country.getCountry())) {
+			if (selectedCountry.equals(country.getCountry())) {
 				chosenCountry = country;
 			}
 		}
 
+		//Creating json objects using gson to be put into JSON-LD format
 		JSONLD json0 = new JSONLD();
 		json0.setName(chosenCountry.getCountry());
 		json0.setType("Country");
-
 		JSONLD json1 = new JSONLD();
 		json1.setTotalConfirmed(Integer.toString(chosenCountry.getTotalConfirmed()));
 		json1.setTotalRecovered(Integer.toString(chosenCountry.getTotalRecovered()));
 		json1.setTotalDeaths(Integer.toString(chosenCountry.getTotalDeaths()));
-
 		JSONLD json = new JSONLD();
 		json.setSpatialCoverage(json0);
 		json.setContext("https://schema.org");
@@ -74,6 +72,7 @@ public class toMarkUp {
 		Gson jsonld = new Gson();
 		String response = jsonld.toJson(json);
 
+		//Writing the country to JSON-LD format using SpecialAnnouncement schema
 		try (FileWriter file = new FileWriter(chosenCountry.getCountry() + "_JSON-LD.jsonld")) {
 			file.write("<script type=\"application/ld+json\">\n");
             file.write(response.toString());

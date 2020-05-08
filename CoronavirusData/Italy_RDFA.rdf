@@ -1,0 +1,12 @@
+<div vocab="http://schema.org/" typeof="SpecialAnnouncement">
+<div property="datePosted">2020-05-08T09:25:13Z
+<div property="spatialCoverage" typeof="place">
+<span property="type">Country</span>
+<span property="name">Italy</span>
+</div>
+<div property="diseaseSpreadStatistics" typeof="observation">
+<span property="TotalRecovered">96276</span>
+<span property="TotalConfirmed">215858</span>
+<span property="TotalDeaths">29958</span>
+</div>
+</div>

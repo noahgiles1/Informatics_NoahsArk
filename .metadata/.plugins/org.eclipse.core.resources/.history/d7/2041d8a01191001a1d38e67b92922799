@@ -1,0 +1,319 @@
+package application;
+
+import java.io.IOException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.ResourceBundle;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
+
+public class CompareCountriesController implements Initializable {
+
+	@FXML Button homeBtn;
+	@FXML LineChart<String,Number> lineChart;
+	@FXML Label lbl;
+	@FXML public ComboBox<String> selectg;
+	@FXML public ComboBox<String> selectC;
+	@FXML public ComboBox<String> selectC1;
+	@FXML public ComboBox<String> selectC2;
+	@FXML public Label y_axis;
+	@FXML public NumberAxis xAxis;
+	
+	ObservableList<String> list = FXCollections.observableArrayList("Confirmed Cases", "Deaths", "Recovered");
+	Country chosenCountry;
+	Country chosenCountry1;
+	Country chosenCountry2;
+	
+	@FXML
+	public void homeEvent(ActionEvent event) throws IOException {
+
+		Stage stage = (Stage) homeBtn.getScene().getWindow();
+		Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	public void btn1(ActionEvent event) throws IOException {
+		//Checking that the user has selected atleast 2 countries
+		if (selectC.getValue() == null) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Country Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select a country from the dropdown box.");
+			alert.showAndWait();
+			return;
+		}
+		if (selectC1.getValue() == null && selectC2.getValue() == null) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Country Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select a country from the dropdown box.");
+			alert.showAndWait();
+			return;
+		}
+		//Checking the user has selected a graph
+		if (selectg.getValue() == null) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Graph Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select the type of graph you wish to view from the dropdown box.");
+			alert.showAndWait();
+			return;
+		}
+		//Makes the needed api calls and writes data to CSV
+		DayOne[] countryData = DataAPIs.dayOneAPI(chosenCountry);
+		CSV.writeCSV(countryData, chosenCountry.getCountry());
+		DayOne[] countryData1 = null;
+		if (selectC1.getValue() != null) {
+			countryData1 = DataAPIs.dayOneAPI(chosenCountry1);
+			CSV.writeCSV(countryData1, chosenCountry1.getCountry());
+		}
+		DayOne[] countryData2 = null;
+		if (selectC2.getValue() != null) {
+			countryData2 = DataAPIs.dayOneAPI(chosenCountry2);
+			CSV.writeCSV(countryData2, chosenCountry2.getCountry());
+		}
+		
+	}
+	
+
+	
+	@SuppressWarnings("unchecked")
+	public void btn(ActionEvent event) throws InterruptedException, IOException, ParseException {
+		//Checking that the user has selected atleast 2 countries
+		if (selectC.getValue() == null) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Country Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select a country from the dropdown box.");
+			alert.showAndWait();
+			return;
+		}
+		if (selectC1.getValue() == null && selectC2.getValue() == null) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Country Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select a country from the dropdown box.");
+			alert.showAndWait();
+			return;
+		}
+		//Checking the user has selected a graph
+		if (selectg.getValue() == null) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Graph Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select the type of graph you wish to view from the dropdown box.");
+			alert.showAndWait();
+			return;
+		}
+
+
+		lineChart.getData().clear();
+		
+		//Setting up series ready to populated from api call data and put into graph
+
+		XYChart.Series<String,Number> deaths= new XYChart.Series<String,Number>(); 
+		XYChart.Series<String,Number> cases= new XYChart.Series<String,Number>(); 
+		XYChart.Series<String,Number> recovered= new XYChart.Series<String,Number>();
+		
+		XYChart.Series<String,Number> deaths1= new XYChart.Series<String,Number>(); 
+		XYChart.Series<String,Number> cases1= new XYChart.Series<String,Number>(); 
+		XYChart.Series<String,Number> recovered1= new XYChart.Series<String,Number>();
+		
+		XYChart.Series<String,Number> deaths2= new XYChart.Series<String,Number>(); 
+		XYChart.Series<String,Number> cases2= new XYChart.Series<String,Number>(); 
+		XYChart.Series<String,Number> recovered2= new XYChart.Series<String,Number>();
+
+		//Find the corresponding countries objects in liveData
+		for (Country country : Main.liveData.getCountries()) {
+			if (selectC.getValue().equals(country.getCountry())) {
+				chosenCountry = country;
+			}
+			if (selectC1.getValue() != null) {
+				if (selectC1.getValue().equals(country.getCountry())) {
+					chosenCountry1 = country;
+				}
+			}
+			if (selectC2.getValue() != null) {
+				if (selectC2.getValue().equals(country.getCountry())) {
+					chosenCountry2 = country;
+				}
+			}
+		}
+		String date = null;
+		String date1 = null;
+		String date2 = null;
+		
+		//Finds the date that the countries hit 100 cases
+		DayOne[] countryData = DataAPIs.dayOneAPI(chosenCountry);
+		for(DayOne dataPoint : countryData) {
+			if (Integer.parseInt(dataPoint.getConfirmed()) < 100 ) {
+				date = dataPoint.getDate().substring(0, 10);
+			}
+		}
+		
+		DayOne[] countryData1 = null;
+		if (selectC1.getValue() != null) {
+			countryData1 = DataAPIs.dayOneAPI(chosenCountry1);
+			for(DayOne dataPoint : countryData1) {
+				if (Integer.parseInt(dataPoint.getConfirmed()) < 100 ) {
+					date1 = dataPoint.getDate().substring(0, 10);
+				}
+			}
+		}
+		DayOne[] countryData2 = null;
+		if (selectC2.getValue() != null) {
+			countryData2 = DataAPIs.dayOneAPI(chosenCountry2);
+			for(DayOne dataPoint : countryData2) {
+				if (Integer.parseInt(dataPoint.getConfirmed()) < 100 ) {
+					date2 = dataPoint.getDate().substring(0, 10);
+				}
+			}
+		}
+		int Minimum = 0;
+	
+		//Works out the date that the graph should start at, according to which country hit 100cases first.
+		if (selectC1.getValue() == null) {
+			Minimum = Math.min(Integer.parseInt(date.replace("-", "")), Integer.parseInt(date2.replace("-", "")));
+		}
+
+		if (selectC2.getValue() == null) {
+			Minimum = Math.min(Integer.parseInt(date.replace("-", "")), Integer.parseInt(date1.replace("-", "")));
+		}
+
+		if (selectC1.getValue() != null & selectC2.getValue() != null) {
+			int Minimum1 =Math.min(Integer.parseInt(date1.replace("-", "")), Integer.parseInt(date2.replace("-", ""))); 
+			Minimum = Math.min(Integer.parseInt(date.replace("-", "")), Minimum1);
+		}
+
+		
+
+		
+		
+		//adds data to the series for each country selected from the date worked out above
+		for(DayOne dataPoint : countryData) {
+			if (Integer.parseInt(dataPoint.getDate().substring(0, 10).replace("-","")) > Minimum ) {
+				deaths.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getDeaths())));
+				cases.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getConfirmed())));
+				recovered.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getRecovered())));
+			}
+		}
+		
+		if (selectC1.getValue() != null) {
+			for(DayOne dataPoint : countryData1) {
+				if (Integer.parseInt(dataPoint.getDate().substring(0, 10).replace("-","")) > Minimum ) {
+					deaths1.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getDeaths())));
+					cases1.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getConfirmed())));
+					recovered1.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getRecovered())));
+				}
+			}
+		}
+		
+		if (selectC2.getValue() != null) {
+			for(DayOne dataPoint : countryData2) {
+				if (Integer.parseInt(dataPoint.getDate().substring(0, 10).replace("-","")) > Minimum ) {
+					deaths2.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getDeaths())));
+					cases2.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getConfirmed())));
+					recovered2.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getRecovered())));
+				}
+			}
+		}
+		
+		
+
+		lineChart.setCreateSymbols(false);
+		lineChart.setAnimated(false);
+		cases.setName("Confirmed Cases - " + chosenCountry.getCountry());
+		deaths.setName("Deaths - " + chosenCountry.getCountry());
+		recovered.setName("Recovered - " + chosenCountry.getCountry());
+		
+		if (selectC1.getValue() != null ) {
+			cases1.setName("Confirmed Cases - " + chosenCountry1.getCountry());
+			deaths1.setName("Deaths - " + chosenCountry1.getCountry());
+			recovered1.setName("Recovered - " + chosenCountry1.getCountry());
+		}
+		
+		if (selectC2.getValue() != null ) {
+			cases2.setName("Confirmed Cases - " + chosenCountry2.getCountry());
+			deaths2.setName("Deaths - " + chosenCountry2.getCountry());
+			recovered2.setName("Recovered - " + chosenCountry2.getCountry());
+		}
+		
+		
+		if (selectg.getValue().equals("Deaths")){
+			if (selectC2.getValue() == null) {
+				lineChart.getData().addAll(deaths, deaths1);
+			}
+			else if (selectC1.getValue() == null) {
+				lineChart.getData().addAll(deaths, deaths2);
+			}
+			else {
+				lineChart.getData().addAll(deaths, deaths1, deaths2);
+			}
+			
+		}
+		 else if (selectg.getValue().equals("Confirmed Cases")) {
+			 if (selectC2.getValue() == null) {
+					lineChart.getData().addAll(cases, cases1);
+				}
+				else if (selectC1.getValue() == null) {
+					lineChart.getData().addAll(cases, cases2);
+				}
+				else {
+					lineChart.getData().addAll(cases, cases1, cases2);
+				}
+		 }
+		 else if (selectg.getValue().equals("Recovered")){
+			 	if (selectC2.getValue() == null) {
+					lineChart.getData().addAll(recovered, recovered1);
+				}
+				else if (selectC1.getValue() == null) {
+					lineChart.getData().addAll(recovered, recovered2);
+				}
+				else if (selectC1.getValue() != null && selectC1.getValue() != null){
+					lineChart.getData().addAll(recovered, recovered1, recovered2);
+				}
+			 }
+	
+	}
+	
+	
+
+
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		selectg.setItems(list);
+		lineChart.setTitle("Comparing Countries");
+		ObservableList<String>  data = FXCollections.observableArrayList();
+		for(Country country : Main.liveData.getCountries()) {
+			if (country.getTotalConfirmed() > 99) {
+				data.add(country.getCountry());
+			}
+		}
+		selectC.setItems(data);
+		selectC1.setItems(data);
+		selectC2.setItems(data);
+		xAxis.setLowerBound(25000);
+	}
+
+}

@@ -52,6 +52,7 @@ public class CompareCountriesController implements Initializable {
 	}
 	
 	public void btn1(ActionEvent event) throws IOException {
+		//Checking that the user has selected atleast 2 countries
 		if (selectC.getValue() == null) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Country Error");
@@ -68,6 +69,7 @@ public class CompareCountriesController implements Initializable {
 			alert.showAndWait();
 			return;
 		}
+		//Checking the user has selected a graph
 		if (selectg.getValue() == null) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Graph Error");
@@ -76,6 +78,7 @@ public class CompareCountriesController implements Initializable {
 			alert.showAndWait();
 			return;
 		}
+		//Makes the needed api calls and writes data to CSV
 		DayOne[] countryData = DataAPIs.dayOneAPI(chosenCountry);
 		CSV.writeCSV(countryData, chosenCountry.getCountry());
 		DayOne[] countryData1 = null;
@@ -95,6 +98,7 @@ public class CompareCountriesController implements Initializable {
 	
 	@SuppressWarnings("unchecked")
 	public void btn(ActionEvent event) throws InterruptedException, IOException, ParseException {
+		//Checking that the user has selected atleast 2 countries
 		if (selectC.getValue() == null) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Country Error");
@@ -111,6 +115,7 @@ public class CompareCountriesController implements Initializable {
 			alert.showAndWait();
 			return;
 		}
+		//Checking the user has selected a graph
 		if (selectg.getValue() == null) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Graph Error");
@@ -122,6 +127,8 @@ public class CompareCountriesController implements Initializable {
 
 
 		lineChart.getData().clear();
+		
+		//Setting up series ready to populated from api call data and put into graph
 
 		XYChart.Series<String,Number> deaths= new XYChart.Series<String,Number>(); 
 		XYChart.Series<String,Number> cases= new XYChart.Series<String,Number>(); 
@@ -135,7 +142,7 @@ public class CompareCountriesController implements Initializable {
 		XYChart.Series<String,Number> cases2= new XYChart.Series<String,Number>(); 
 		XYChart.Series<String,Number> recovered2= new XYChart.Series<String,Number>();
 
-
+		//Find the corresponding countries objects in liveData
 		for (Country country : Main.liveData.getCountries()) {
 			if (selectC.getValue().equals(country.getCountry())) {
 				chosenCountry = country;
@@ -155,6 +162,7 @@ public class CompareCountriesController implements Initializable {
 		String date1 = null;
 		String date2 = null;
 		
+		//Finds the date that the countries hit 100 cases
 		DayOne[] countryData = DataAPIs.dayOneAPI(chosenCountry);
 		for(DayOne dataPoint : countryData) {
 			if (Integer.parseInt(dataPoint.getConfirmed()) < 100 ) {
@@ -182,7 +190,7 @@ public class CompareCountriesController implements Initializable {
 		}
 		int Minimum = 0;
 	
-
+		//Works out the date that the graph should start at, according to which country hit 100cases first.
 		if (selectC1.getValue() == null) {
 			Minimum = Math.min(Integer.parseInt(date.replace("-", "")), Integer.parseInt(date2.replace("-", "")));
 		}
@@ -200,7 +208,7 @@ public class CompareCountriesController implements Initializable {
 
 		
 		
-		
+		//adds data to the series for each country selected from the date worked out above
 		for(DayOne dataPoint : countryData) {
 			if (Integer.parseInt(dataPoint.getDate().substring(0, 10).replace("-","")) > Minimum ) {
 				deaths.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getDeaths())));
@@ -250,7 +258,10 @@ public class CompareCountriesController implements Initializable {
 		}
 		
 		
+		//Populating the graph with the data that the user selected
 		if (selectg.getValue().equals("Deaths")){
+			y_axis.setText("No. of Deaths");
+			y_axis.setRotate(270.0);
 			if (selectC2.getValue() == null) {
 				lineChart.getData().addAll(deaths, deaths1);
 			}
@@ -263,6 +274,8 @@ public class CompareCountriesController implements Initializable {
 			
 		}
 		 else if (selectg.getValue().equals("Confirmed Cases")) {
+			 y_axis.setText("No. of Confirmed Cases");
+				y_axis.setRotate(270.0);
 			 if (selectC2.getValue() == null) {
 					lineChart.getData().addAll(cases, cases1);
 				}
@@ -274,6 +287,8 @@ public class CompareCountriesController implements Initializable {
 				}
 		 }
 		 else if (selectg.getValue().equals("Recovered")){
+			 y_axis.setText("No. of Recoveries");
+				y_axis.setRotate(270.0);
 			 	if (selectC2.getValue() == null) {
 					lineChart.getData().addAll(recovered, recovered1);
 				}
@@ -297,6 +312,7 @@ public class CompareCountriesController implements Initializable {
 		selectg.setItems(list);
 		lineChart.setTitle("Comparing Countries");
 		ObservableList<String>  data = FXCollections.observableArrayList();
+		//Only adds countries with over 100 cases
 		for(Country country : Main.liveData.getCountries()) {
 			if (country.getTotalConfirmed() > 99) {
 				data.add(country.getCountry());

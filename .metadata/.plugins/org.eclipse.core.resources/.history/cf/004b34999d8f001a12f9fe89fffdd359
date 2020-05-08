@@ -1,0 +1,86 @@
+package application;
+
+public class JSONLD {
+	
+	private String TotalRecovered;
+	
+	private String TotalConfirmed;
+	
+	private String TotalDeaths;
+	
+	private String datePosted;
+	
+	private String type;
+	
+	private String name;
+	
+	private String context;
+	
+	private String spatialCoverage;
+	
+	public String getTotalRecovered ()
+	   {
+	       return TotalRecovered;
+	   }
+
+	public void setTotalRecovered (String NewRecovered)
+	   {
+	       this.TotalRecovered = NewRecovered;
+	   }
+
+	public String getTotalConfirmed() {
+		return TotalConfirmed;
+	}
+
+	public void setTotalConfirmed(String totalConfirmed) {
+		this.TotalConfirmed = totalConfirmed;
+	}
+
+	public String getTotalDeaths() {
+		return TotalDeaths;
+	}
+
+	public void setTotalDeaths(String totalDeaths) {
+		this.TotalDeaths = totalDeaths;
+	}
+
+	public String getDatePosted() {
+		return datePosted;
+	}
+
+	public void setDatePosted(String datePosted) {
+		this.datePosted = datePosted;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getContext() {
+		return context;
+	}
+
+	public void setContext(String context) {
+		this.context = context;
+	}
+
+	public String getSpatialCoverage() {
+		return spatialCoverage;
+	}
+
+	public void setSpatialCoverage(String spatialCoverage) {
+		this.spatialCoverage = getType() + getName();
+	}
+}
