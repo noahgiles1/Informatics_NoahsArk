@@ -40,7 +40,7 @@ public class PastDataController implements Initializable {
 	public void homeEvent(ActionEvent event) throws IOException {
 
 		Stage stage = (Stage) homeBtn.getScene().getWindow();
-		Parent root = FXMLLoader.load(getClass().getResource("Main.fxml")); // loads main page
+		Parent root = FXMLLoader.load(getClass().getResource("COVID-19.fxml")); // loads main page
 
 		Scene scene = new Scene(root);
 		stage.setScene(scene);

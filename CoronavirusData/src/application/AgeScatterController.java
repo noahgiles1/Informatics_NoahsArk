@@ -27,7 +27,7 @@ public class AgeScatterController implements Initializable{
 	@FXML
 	void homeEvent(ActionEvent event) throws IOException {
 		Stage stage = (Stage) homeBtn.getScene().getWindow();
-		Parent root = FXMLLoader.load(getClass().getResource("Main.fxml")); // loads main screen
+		Parent root = FXMLLoader.load(getClass().getResource("COVID-19.fxml")); // loads main screen
 
 		Scene scene = new Scene(root);
 		stage.setScene(scene);

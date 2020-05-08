@@ -3,6 +3,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -10,11 +12,20 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <children>
-      <Label layoutX="198.0" layoutY="27.0" text="Bio-StatLab">
-         <font>
-            <Font size="40.0" />
-         </font>
-      </Label>
+      <HBox alignment="CENTER" layoutX="118.0" prefHeight="100.0" prefWidth="365.0">
+         <children>
+            <ImageView fitHeight="77.0" fitWidth="82.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Icons/Untitled.png" />
+               </image>
+            </ImageView>
+            <Label text="Bio-StatLab">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
       <VBox layoutX="73.0" layoutY="103.0" prefHeight="276.0" prefWidth="454.0" spacing="10.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="527.0" spacing="20.0">

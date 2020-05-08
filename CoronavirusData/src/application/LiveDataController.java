@@ -57,7 +57,7 @@ public class LiveDataController implements Initializable{
 
 		if(event.getSource()==HomeBtn){
 			Stage stage = (Stage) HomeBtn.getScene().getWindow();
-			Parent root = FXMLLoader.load(getClass().getResource("Main.fxml")); // opens main screen
+			Parent root = FXMLLoader.load(getClass().getResource("COVID-19.fxml")); // opens main screen
 
 			Scene scene = new Scene(root);
 			stage.setScene(scene);

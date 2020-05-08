@@ -22,7 +22,7 @@ public class DataAPIs {
 	public static void checkAPI(int responseCode) {
 		Component frame = null;
 		if (responseCode != 200) {
-			JOptionPane.showMessageDialog(frame, "There was a problem retrieving data from the API please try again. \n" + "Error code: " + responseCode);
+			JOptionPane.showMessageDialog(frame, "There was a problem retrieving data from the API. \n We will try to use a local backup \n" + "Error code: " + responseCode);
 		}
 	}
 
@@ -125,7 +125,6 @@ public class DataAPIs {
 				}
 		}
 
-		in.close();
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Gson gson = gsonBuilder.create();
 

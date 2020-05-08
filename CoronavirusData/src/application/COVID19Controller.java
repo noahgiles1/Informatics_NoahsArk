@@ -76,13 +76,6 @@ public class COVID19Controller implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     	try {
-    		Process process = java.lang.Runtime.getRuntime().exec("ping www.google.co.uk"); // tests internet connection
-    		int x = process.waitFor();
-    		if (x != 0) {
-    			Component frame = null;
-    			JOptionPane.showMessageDialog(frame, "There seems to be a problem with your internet connection, please try again.");
-    		}
-
     		liveData = DataAPIs.liveDataAPI(); // current data api
 
     		popAge = DataAPIs.populationAgeAPI(); // population age api
@@ -93,8 +86,6 @@ public class COVID19Controller implements Initializable{
     	}
     	catch(IOException a) {
     	} 
-    	catch (InterruptedException e) {
-    	}
     }
 
 }
