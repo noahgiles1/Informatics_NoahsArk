@@ -19,7 +19,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class LiveDataController implements Initializable{
@@ -58,7 +57,7 @@ public class LiveDataController implements Initializable{
 
 		if(event.getSource()==HomeBtn){
 			Stage stage = (Stage) HomeBtn.getScene().getWindow();
-			Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("Main.fxml")); // opens main screen
 
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
@@ -107,10 +106,12 @@ public class LiveDataController implements Initializable{
 	    }
 	 
 	 @FXML
-	    void rowClicked(MouseEvent event) {
+	    void rowClicked(MouseEvent event) { // if row clicked
+		 	// show buttons
 		 	pastDataBtn.setVisible(true);
 		 	jsonLD.setVisible(true);
 		 	RDFa.setVisible(true);
+		 	
 	    }
 
 

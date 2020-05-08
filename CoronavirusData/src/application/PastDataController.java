@@ -1,45 +1,27 @@
 package application;
 
-import java.util.ArrayList;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
-import java.io.BufferedReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
 
 public class PastDataController implements Initializable {
 
@@ -58,17 +40,18 @@ public class PastDataController implements Initializable {
 	public void homeEvent(ActionEvent event) throws IOException {
 
 		Stage stage = (Stage) homeBtn.getScene().getWindow();
-		Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("Main.fxml")); // loads main page
 
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
 	}
-	
+
 
 	public void btn1(ActionEvent event) throws IOException {
 
 		if (selectC.getValue() == null) {
+			// error popup if a country is not selected
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Country Error");
 			alert.setHeaderText(null);
@@ -77,6 +60,7 @@ public class PastDataController implements Initializable {
 			return;
 		}
 		if (selectg.getValue() == null) {
+			// error popup if a type is not selected
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Graph Error");
 			alert.setHeaderText(null);
@@ -85,16 +69,16 @@ public class PastDataController implements Initializable {
 			return;
 		}
 
-
+		// finds the corresponding country object in liveData
 		for (Country country : Main.liveData.getCountries()) {
 			if (selectC.getValue().equals(country.getCountry())) {
 				lineChart.setTitle(selectC.getValue() + " Stats");
 				chosenCountry = country;
 			}
 		}
-		
 
-		DayOne[] countryData = DataAPIs.dayOneAPI(chosenCountry);
+
+		DayOne[] countryData = DataAPIs.dayOneAPI(chosenCountry); // uses the dayone api to get the past data for the country
 
 		CSV.writeCSV(countryData, chosenCountry.getCountry());
 	}
@@ -104,6 +88,7 @@ public class PastDataController implements Initializable {
 	@SuppressWarnings("unchecked")
 	public void btn(ActionEvent event) throws InterruptedException, IOException {
 		if (selectC.getValue() == null) {
+			// error popup if a country is not selected
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Country Error");
 			alert.setHeaderText(null);
@@ -112,6 +97,7 @@ public class PastDataController implements Initializable {
 			return;
 		}
 		if (selectg.getValue() == null) {
+			// error popup if type is not selected
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Graph Error");
 			alert.setHeaderText(null);
@@ -120,24 +106,26 @@ public class PastDataController implements Initializable {
 			return;
 		}
 
-		lineChart.getData().clear();
+		lineChart.getData().clear(); // resets the graph
 
 		XYChart.Series<String,Number> deaths= new XYChart.Series<String,Number>();
 		XYChart.Series<String,Number> cases= new XYChart.Series<String,Number>();
 		XYChart.Series<String,Number> recovered= new XYChart.Series<String,Number>();
 
 		for (Country country : Main.liveData.getCountries()) {
+			// finds the corresponding country object in liveData
 			if (selectC.getValue().equals(country.getCountry())) {
 				lineChart.setTitle(selectC.getValue() + " Stats");
 				chosenCountry = country;
 			}
 		}
 
-		DayOne[] countryData = DataAPIs.dayOneAPI(chosenCountry);
+		DayOne[] countryData = DataAPIs.dayOneAPI(chosenCountry); // uses the dayone api to get the past data for the country
 
 
 		for(DayOne dataPoint : countryData) {
-			if (Integer.parseInt(dataPoint.getConfirmed()) > 99 ) {
+			if (Integer.parseInt(dataPoint.getConfirmed()) > 99 ) { 
+				// only adds the data from the point the country had over 100 cases
 				deaths.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getDeaths())));
 				cases.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getConfirmed())));
 				recovered.getData().add(new XYChart.Data<String, Number> (dataPoint.getDate().substring(0, 10),Integer.parseInt(dataPoint.getRecovered())));
@@ -146,42 +134,50 @@ public class PastDataController implements Initializable {
 
 		lineChart.setCreateSymbols(false);
 		lineChart.setAnimated(false);
+		
 		cases.setName("Confirmed Cases");
 		deaths.setName("Deaths");
 		recovered.setName("Recovered");
 
 		if (selectg.getValue().equals("Deaths")){
+			y_axis.setText("No. of Deaths");
+			y_axis.setRotate(270.0);
 			lineChart.getData().addAll(deaths);
 
 		}
 		else if (selectg.getValue().equals("Confirmed Cases")){
+			y_axis.setText("No. of Confirmed Cases");
+			y_axis.setRotate(270.0);
 			lineChart.getData().addAll(cases);
 		}
 		else if (selectg.getValue().equals("Recovered")){
+			y_axis.setText("No. of Recoveries");
+			y_axis.setRotate(270.0);
 			lineChart.getData().addAll(recovered);
 		}
 		else if (selectg.getValue().equals("All")){
+			y_axis.setText("");
+			y_axis.setRotate(270.0);
 			lineChart.getData().addAll(cases, deaths, recovered);
 		}
-
-
-		return;
 
 	}
 
 
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		selectg.setItems(list);
+		// on fxml load
+		selectg.setItems(list); // adds the OrganisableList to the selectg items
+		
 		ObservableList<String>  data = FXCollections.observableArrayList();
+		
 		for(Country country : Main.liveData.getCountries()) {
+			// only adds countries with over 100 cases
 			if ((country.getTotalConfirmed()) > 99) {
 				data.add(country.getCountry());
 			}
 		}
 		selectC.setItems(data);
-		xAxis.setLowerBound(25000);
+
 	}
 }

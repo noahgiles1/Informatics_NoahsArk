@@ -9,12 +9,12 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
+import com.google.gson.JsonIOException;
 
 public class toMarkUp {
 	public static DataObject liveData;
 	static Country chosenCountry;
-	
+
 	public static void RDFa(String countryString) throws IOException {
 		String hello = countryString;
 		liveData = DataAPIs.liveDataAPI();
@@ -23,7 +23,7 @@ public class toMarkUp {
 				chosenCountry = country;
 			}
 		}
-		
+
 		try (FileWriter file = new FileWriter(chosenCountry.getCountry() + "_RDFA.rdf")) {
 			file.write("<div vocab=\"http://schema.org/\" typeof=\"SpecialAnnouncement\">\n");
 			file.write("<div property=\"datePosted\">" + chosenCountry.getDate() + "\n");
@@ -38,15 +38,15 @@ public class toMarkUp {
 			file.write("</div>\n");
 			file.write("</div>\n");
 			file.flush();
-		
+
 	 } catch (IOException e) {
          e.printStackTrace();
      }
-		
-		
-		
+
+
+
 	}
-	
+
 	public static void jsonLd(String countryString) throws IOException {
 		String hello = countryString;
 		liveData = DataAPIs.liveDataAPI();
@@ -55,16 +55,16 @@ public class toMarkUp {
 				chosenCountry = country;
 			}
 		}
-		
+
 		JSONLD json0 = new JSONLD();
 		json0.setName(chosenCountry.getCountry());
 		json0.setType("Country");
-		
+
 		JSONLD json1 = new JSONLD();
 		json1.setTotalConfirmed(Integer.toString(chosenCountry.getTotalConfirmed()));
 		json1.setTotalRecovered(Integer.toString(chosenCountry.getTotalRecovered()));
 		json1.setTotalDeaths(Integer.toString(chosenCountry.getTotalDeaths()));
-		
+
 		JSONLD json = new JSONLD();
 		json.setSpatialCoverage(json0);
 		json.setContext("https://schema.org");
@@ -73,17 +73,17 @@ public class toMarkUp {
 		json.setType("SpecialAnnouncement");
 		Gson jsonld = new Gson();
 		String response = jsonld.toJson(json);
-		
+
 		try (FileWriter file = new FileWriter(chosenCountry.getCountry() + "_JSON-LD.jsonld")) {
-			file.write("<script type=\"application/ld+json\">\n"); 
+			file.write("<script type=\"application/ld+json\">\n");
             file.write(response.toString());
-            file.write("\n</script>"); 
+            file.write("\n</script>");
             file.flush();
- 
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 	}
-	
+
 
 }

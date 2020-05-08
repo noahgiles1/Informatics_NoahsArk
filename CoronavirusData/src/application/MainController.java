@@ -1,17 +1,13 @@
 package application;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class MainController {
@@ -32,7 +28,7 @@ public class MainController {
     void HandleButtonEvent(ActionEvent event) throws IOException {
         Stage stage = null;
         Parent root = null;
-       
+        // chooses between the pages available depending on the event source
         if(event.getSource()==LiveData){
             stage = (Stage) LiveData.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("LiveDataScreen.fxml"));
