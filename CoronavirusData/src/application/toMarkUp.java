@@ -9,12 +9,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
-import com.google.schemaorg.JsonLdSerializer;
-import com.google.schemaorg.JsonLdSyntaxException;
-import com.google.schemaorg.core.CoreFactory;
-import com.google.schemaorg.core.Thing;
-import com.google.schemaorg.core.datatype.Text;
+
 
 public class toMarkUp {
 	public static DataObject liveData;
@@ -29,7 +24,7 @@ public class toMarkUp {
 			}
 		}
 		
-		try (FileWriter file = new FileWriter(chosenCountry.getCountry() + "_RDFA.html")) {
+		try (FileWriter file = new FileWriter(chosenCountry.getCountry() + "_RDFA.rdf")) {
 			file.write("<div vocab=\"http://schema.org/\" typeof=\"SpecialAnnouncement\">\n");
 			file.write("<div property=\"datePosted\">" + chosenCountry.getDate() + "\n");
 			file.write("<div property=\"spatialCoverage\" typeof=\"place\">\n");
@@ -79,7 +74,7 @@ public class toMarkUp {
 		Gson jsonld = new Gson();
 		String response = jsonld.toJson(json);
 		
-		try (FileWriter file = new FileWriter(chosenCountry.getCountry() + "_JSON-LD.json")) {
+		try (FileWriter file = new FileWriter(chosenCountry.getCountry() + "_JSON-LD.jsonld")) {
 			file.write("<script type=\"application/ld+json\">\n"); 
             file.write(response.toString());
             file.write("\n</script>"); 
