@@ -23,7 +23,7 @@ public class Main extends Application{
 			primaryStage.setScene(scene);
 			
 			primaryStage.setTitle("Bio-Statlab");
-            Image image = new Image(getClass().getResourceAsStream("/icons/Untitled.png"));
+            Image image = new Image(getClass().getResourceAsStream("/Icons/Untitled.png"));
             primaryStage.getIcons().add(image);
 			primaryStage.show();
 

@@ -31,7 +31,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="527.0" spacing="20.0">
                <children>
                   <Label text="Filter available diseases:" />
-                  <TextField fx:id="searchField" prefHeight="25.0" prefWidth="227.0" />
+                  <TextField fx:id="searchField" prefHeight="25.0" prefWidth="227.0" promptText="enter filter here" />
                </children>
             </HBox>
             <ListView fx:id="diseaseList" prefHeight="211.0" prefWidth="523.0" />

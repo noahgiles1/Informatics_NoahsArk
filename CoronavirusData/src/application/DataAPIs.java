@@ -51,23 +51,26 @@ public class DataAPIs {
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
 			}
-			FileWriter file = new FileWriter("liveDataBackUp.json");
+			FileWriter file = new FileWriter("liveDataBackUp.json"); // write API data to backup file
 			file.write(response.toString());
 			file.flush();
+			file.close();
 			in.close();
 		}
 		else if (responseCode != 200) {
 			try {
-			File myObj = new File("liveDataBackUp.json");
-		    Scanner myReader = new Scanner(myObj);
-		    String data = myReader.nextLine();
-		    response.append(data);
+				File myObj = new File("liveDataBackUp.json");  // check for backup data if no data returned from API
+				Scanner myReader = new Scanner(myObj);
+				String data = myReader.nextLine();
+				response.append(data);
+				myReader.close();
 			}
 			catch (FileNotFoundException e) {
 				Component frame = null;
 				JOptionPane.showMessageDialog(frame, "No backup file found");
 				return null;
 			}
+
 		}
 
 		//Turning the data from API call into an object and returning it
@@ -109,20 +112,22 @@ public class DataAPIs {
 			FileWriter file = new FileWriter(country.getCountry() + "pastDataBackUp.json");
 			file.write(response.toString());
 			file.flush();
+			file.close();
 			in.close();
 		}
 		else if (responseCode != 200) {
 			try {
-				File myObj = new File(country.getCountry() + "pastDataBackUp.json");
-			    Scanner myReader = new Scanner(myObj);
-			    String data = myReader.nextLine();
-			    response.append(data);
-				}
-				catch (FileNotFoundException e) {
-					Component frame = null;
-					JOptionPane.showMessageDialog(frame, "No backup file found");
-					//return null;
-				}
+				File myObj = new File(country.getCountry() + "pastDataBackUp.json"); // check for backup data if no data returned from API
+				Scanner myReader = new Scanner(myObj);
+				String data = myReader.nextLine();
+				response.append(data);
+				myReader.close();
+			}
+			catch (FileNotFoundException e) {
+				Component frame = null;
+				JOptionPane.showMessageDialog(frame, "No backup file found");
+				//return null;
+			}
 		}
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
@@ -139,7 +144,7 @@ public class DataAPIs {
 		//API call for countries population data
 		StringBuffer response = new StringBuffer();
 
-		String url = "http://api.worldbank.org/v2/country/all/indicator/SP.POP.65UP.TO.ZS?date=2018&per_page=1000&format=json";
+		String url = "http://api.worldbank.org/v2/country/all/indicator/SP.POP.65UP.TO.ZS?date=2018&per_page=1000&format=json"; // population age API 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 		int responseCode;
@@ -155,27 +160,30 @@ public class DataAPIs {
 		checkAPI(responseCode);
 
 		if (responseCode == 200) {
-			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream())); // if API call is successful
 			String inputLine;
 
 
 			while ((inputLine = in.readLine()) != null) {
-
+				// removes the header of the json file which contains data we do not need
 				String inputLine2 = inputLine.replaceFirst("\\{.*?\\}", "");
 				String inputLine3 = inputLine2.substring(2, inputLine2.length()-1);
+
 				response.append(inputLine3);
 			}
-			FileWriter file = new FileWriter("populationBackUp.json");
+			FileWriter file = new FileWriter("populationBackUp.json"); // writes the api data to a backup file
 			file.write(response.toString());
 			file.flush();
+			file.close();
 			in.close();
 		}
 		else if (responseCode != 200) {
 			try {
-				File myObj = new File("populationBackUp.json");
-			    Scanner myReader = new Scanner(myObj);
-			    String data = myReader.nextLine();
-			    response.append(data);
+				File myObj = new File("populationBackUp.json"); // if the api does not return the data, check for backup data first, and load if there
+				Scanner myReader = new Scanner(myObj);
+				String data = myReader.nextLine();
+				response.append(data);
+				myReader.close();
 			}
 			catch (FileNotFoundException e) {
 				Component frame = null;

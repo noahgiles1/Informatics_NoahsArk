@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 
-import javafx.scene.shape.Path;
 
 public class toMarkUp {
 	public static DataObject liveData;
